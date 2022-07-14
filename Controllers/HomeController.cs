@@ -22,6 +22,11 @@ namespace WebApplication3.Controllers
             return View();
         }
 
+        public ActionResult Login()
+        {
+            return View();
+        }
+
         public IActionResult SignUp()
         {
             return View();
@@ -40,8 +45,15 @@ namespace WebApplication3.Controllers
                 //password hashliyor kendisi 
                 IdentityResult identityResult = await _userManager.CreateAsync(_users, userViewModel.Password);
 
+                if (identityResult.Succeeded)
+                    return RedirectToAction("Login");
+                else
+                {
+                    foreach (IdentityError item in identityResult.Errors)
+                        ModelState.AddModelError("", item.Description);
+                }
             }
-            return View();
+            return View(userViewModel);
         }
     }
 }
