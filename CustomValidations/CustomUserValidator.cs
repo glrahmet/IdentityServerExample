@@ -14,13 +14,13 @@ namespace IdentityServerExample.CustomValidations
 
 
             if (!Convert.ToBoolean(Convert.ToInt32(user.UserName[0])))
-                error.Add(new IdentityError() { Code = "UserNameFirstDigit", Description = "Kullanıcı adı ilk kararteri sayısal veri olamaz" };
+                error.Add(new IdentityError() { Code = "UserNameFirstDigit", Description = "Kullanıcı adı ilk kararteri sayısal veri olamaz" });
 
 
             if (error.Count == 0)
                 return await Task.FromResult(IdentityResult.Success);
             else
-                return await Task.FromResult(IdentityResult.Failed(error.ToArray());
+                return await Task.FromResult(IdentityResult.Failed(error.ToArray()));
         }
     }
 }
