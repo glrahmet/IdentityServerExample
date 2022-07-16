@@ -37,7 +37,12 @@ namespace WebApplication3
                 opt.Password.RequireLowercase = false;
                 opt.Password.RequireUppercase = false;
                 opt.Password.RequireDigit = false;
-            }).AddPasswordValidator<CustomPasswordValidator>().AddEntityFrameworkStores<IdentityDbContextManager>();
+
+                //email uniq karakterler için ve karakter setini belirtmek için kullanýlýr
+                opt.User.RequireUniqueEmail = true;
+                opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 -._";
+
+            }).AddPasswordValidator<CustomPasswordValidator>().AddUserValidator<CustomUserValidator>().AddEntityFrameworkStores<IdentityDbContextManager>();
 
             services.AddControllersWithViews();
         }
