@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using IdentityServerExample.Models;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WebApplication3.Models;
 
 namespace IdentityServerExample.CustomValidations
 {

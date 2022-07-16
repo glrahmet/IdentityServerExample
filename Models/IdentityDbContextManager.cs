@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApplication3.Models
+namespace IdentityServerExample.Models
 {
     public class IdentityDbContextManager : IdentityDbContext<User>
     {

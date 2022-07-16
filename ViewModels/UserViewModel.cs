@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApplication3.ViewModels
+namespace IdentityServerExample.ViewModels
 {
     public class UserViewModel
     {
@@ -23,7 +23,7 @@ namespace WebApplication3.ViewModels
 
         [Required(ErrorMessage = "Şifre gereklidir")]
         [Display(Name = "Şifre")]
-        [DataType(DataType.Password)] 
+        [DataType(DataType.Password)]
         public string Password { get; set; }
     }
 }
