@@ -1,4 +1,5 @@
 
+using IdentityServerExample.CustomValidations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -36,7 +37,7 @@ namespace WebApplication3
                 opt.Password.RequireLowercase = false;
                 opt.Password.RequireUppercase = false;
                 opt.Password.RequireDigit = false;
-            }).AddEntityFrameworkStores<IdentityDbContextManager>();
+            }).AddPasswordValidator<CustomPasswordValidator>().AddEntityFrameworkStores<IdentityDbContextManager>();
 
             services.AddControllersWithViews();
         }
