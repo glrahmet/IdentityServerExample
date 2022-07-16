@@ -21,14 +21,24 @@ namespace WebApplication3
         public void ConfigureServices(IServiceCollection services)
         {
 
-
+            //appsetting de connection string bilgilerini okuduk ve context inject ettik 
             services.AddDbContext<IdentityDbContextManager>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString"));
             });
-            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<IdentityDbContextManager>(); 
- 
-            services.AddControllersWithViews(); 
+
+            //identity sýnýfýný inject ettik.
+            //password kýsýmlarý için gerekli kontrolleri kýsýtladýk þifre oluþtururken 
+            services.AddIdentity<User, IdentityRole>(opt =>
+            {
+                opt.Password.RequiredLength = 4;
+                opt.Password.RequireNonAlphanumeric = false;
+                opt.Password.RequireLowercase = false;
+                opt.Password.RequireUppercase = false;
+                opt.Password.RequireDigit = false;
+            }).AddEntityFrameworkStores<IdentityDbContextManager>();
+
+            services.AddControllersWithViews();
         }
 
 
