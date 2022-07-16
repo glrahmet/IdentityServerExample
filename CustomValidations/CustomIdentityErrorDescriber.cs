@@ -30,5 +30,14 @@ namespace IdentityServerExample.CustomValidations
                 Description = $"Şifreniz  en az {length} karakterli olmalıdır"
             };
         }
+
+        public override IdentityError DuplicateUserName(string userName)
+        {
+            return new IdentityError()
+            {
+                Code = "DublicateUserName",
+                Description = $"Bu  username {userName} zaten kullanılmaktadır"
+            };
+        }
     }
 }
