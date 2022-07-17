@@ -30,39 +30,22 @@ namespace IdentityServerExample
 
 
             //cookies create
+            //cookies create
             CookieBuilder cookieBuilder = new CookieBuilder();
-            cookieBuilder.Name = "MyAccount";
 
-            //client side tarafýnda cookie bilgilerine eriþimemesi için 
+            cookieBuilder.Name = "MyBlog";
             cookieBuilder.HttpOnly = false;
-            //cookie süresi 
-            cookieBuilder.Expiration = System.TimeSpan.FromHours(1);
-
-
-            //lax default olarak geliyor 
-            //
             cookieBuilder.SameSite = SameSiteMode.Lax;
-
-            //strict sadece benim sitem üzerinden gelenleri tut bankacýlýk uygulamalarýnda 
-            //cookieBuilder.SameSite = SameSiteMode.Strict;
-
-            //https üzerinden sadece gönderir
-            //cookieBuilder.SecurePolicy = CookieSecurePolicy.Always;
-
-            //http ve https üzerinden geldiði þekilde gönderir 
             cookieBuilder.SecurePolicy = CookieSecurePolicy.SameAsRequest;
-            //hiç bir þey yapmaz 
-            //cookieBuilder.SecurePolicy = CookieSecurePolicy.None;
 
-
-
-            services.ConfigureApplicationCookie(opt =>
+            services.ConfigureApplicationCookie(opts =>
             {
-                opt.LoginPath = new PathString("/Home/Login");
-                opt.LogoutPath = new PathString("/Home/Logout");
-                opt.Cookie = cookieBuilder;
-                //son gününde ya da saatinde tekrardan istek yapar ise cookie bilgisinin süresini otomatik olarak uzatýr.
-                opt.SlidingExpiration = true;
+                opts.LoginPath = new PathString("/Home/Login");
+                opts.LogoutPath = new PathString("/Member/LogOut");
+                opts.Cookie = cookieBuilder;
+                opts.SlidingExpiration = true;
+                opts.ExpireTimeSpan = System.TimeSpan.FromDays(60);
+                opts.AccessDeniedPath = new PathString("/Member/AccessDenied");
             });
 
 
