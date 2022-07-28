@@ -29,25 +29,6 @@ namespace IdentityServerExample
             });
 
 
-            //cookies create
-            //cookies create
-            CookieBuilder cookieBuilder = new CookieBuilder();
-
-            cookieBuilder.Name = "MyBlog";
-            cookieBuilder.HttpOnly = false;
-            cookieBuilder.SameSite = SameSiteMode.Lax;
-            cookieBuilder.SecurePolicy = CookieSecurePolicy.SameAsRequest;
-
-            services.ConfigureApplicationCookie(opts =>
-            {
-                opts.LoginPath = new PathString("/Home/Login");
-                opts.LogoutPath = new PathString("/Member/LogOut");
-                opts.Cookie = cookieBuilder;
-                opts.SlidingExpiration = true;
-                opts.ExpireTimeSpan = System.TimeSpan.FromDays(60);
-                opts.AccessDeniedPath = new PathString("/Member/AccessDenied");
-            });
-
 
             //identity sýnýfýný inject ettik.
             //password kýsýmlarý için gerekli kontrolleri kýsýtladýk þifre oluþtururken 
@@ -67,9 +48,30 @@ namespace IdentityServerExample
                 .AddPasswordValidator<CustomPasswordValidator>()
                 .AddUserValidator<CustomUserValidator>()
                 .AddErrorDescriber<CustomIdentityErrorDescriber>()
-                .AddEntityFrameworkStores<IdentityDbContextManager>();
+                .AddEntityFrameworkStores<IdentityDbContextManager>()
+                .AddDefaultTokenProviders();
 
             services.AddControllersWithViews();
+
+
+            //cookies create            
+            CookieBuilder cookieBuilder = new CookieBuilder();
+
+            cookieBuilder.Name = "CookiesAamet";
+            cookieBuilder.HttpOnly = false;
+            cookieBuilder.SameSite = SameSiteMode.Lax;
+            cookieBuilder.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+
+            services.ConfigureApplicationCookie(opts =>
+            {
+                opts.LoginPath = new PathString("/Home/Login");
+                opts.LogoutPath = new PathString("/Member/LogOut");
+                opts.Cookie = cookieBuilder;
+                opts.SlidingExpiration = true;
+                opts.ExpireTimeSpan = System.TimeSpan.FromDays(60);
+                opts.AccessDeniedPath = new PathString("/Member/AccessDenied");
+            });
+
         }
 
 
@@ -82,6 +84,7 @@ namespace IdentityServerExample
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
