@@ -32,7 +32,7 @@ namespace IdentityServerExample
 
             //identity sýnýfýný inject ettik.
             //password kýsýmlarý için gerekli kontrolleri kýsýtladýk þifre oluþtururken 
-            services.AddIdentity<User, IdentityRole>(opt =>
+            services.AddIdentity<User, UserRole>(opt =>
             {
                 opt.Password.RequiredLength = 4;
                 opt.Password.RequireNonAlphanumeric = false;
@@ -49,6 +49,7 @@ namespace IdentityServerExample
                 .AddUserValidator<CustomUserValidator>()
                 .AddErrorDescriber<CustomIdentityErrorDescriber>()
                 .AddEntityFrameworkStores<IdentityDbContextManager>()
+                
                 .AddDefaultTokenProviders();
 
             services.AddControllersWithViews();
