@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IdentityServerExample.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -25,5 +26,18 @@ namespace IdentityServerExample.ViewModels
         [Display(Name = "Şifre")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        [Display(Name = "İl")]
+        public string City { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Doğum Günü")]
+        public DateTime? BirthDay { get; set; }
+
+        [Display(Name = "Cinsiyet")]
+        public Gender Gender { get; set; } 
+       
+        public string PictureUrl { get; set; }
+
     }
 }

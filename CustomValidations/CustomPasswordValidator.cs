@@ -14,11 +14,14 @@ namespace IdentityServerExample.CustomValidations
             if (password.ToLower().Contains(user.UserName.ToLower()))
                 errors.Add(new IdentityError() { Code = "PasswordContaiansUserName", Description = "Şifre alanı kullanıcı adı içeremez." });
 
-            if(password.ToLower().Contains("1234"))
+            if (password.ToLower().Contains("1234"))
                 errors.Add(new IdentityError() { Code = "PasswordContaiansUserName1234", Description = "Şifre alanı ardışık sayı içeremez." });
 
             if (password.ToLower().Contains(user.Email))
                 errors.Add(new IdentityError() { Code = "PasswordContaiansEmail", Description = "Şifre alanı email adresi içeremez." });
+
+            if (password.Length < 4)
+                errors.Add(new IdentityError() { Code = "PasswordLengthSmall", Description = "Şifreniz 4 karakterden daha uzun olmalıdır." });
 
             if (errors.Count == 0)
                 return await Task.FromResult(IdentityResult.Success);

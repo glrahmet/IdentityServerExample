@@ -2,6 +2,9 @@
 
 namespace IdentityServerExample.CustomValidations
 {
+    /// <summary>
+    /// errorları validation durumlarını türkçeleştirmek için kullanıyoruz 
+    /// </summary>
     public class CustomIdentityErrorDescriber : IdentityErrorDescriber
     {
         public override IdentityError InvalidUserName(string userName)
@@ -36,7 +39,7 @@ namespace IdentityServerExample.CustomValidations
             return new IdentityError()
             {
                 Code = "DublicateUserName",
-                Description = $"Bu  username {userName} zaten kullanılmaktadır"
+                Description = $"Bu {userName} zaten kullanılmaktadır"
             };
         }
     }

@@ -14,6 +14,6 @@ namespace IdentityServerExample.Models
         [DataType(DataType.Password)]
         [MinLength(4)]
         public string Password { get; set; }
-
+        public bool RememberMe { get; set; }
     }
 }
