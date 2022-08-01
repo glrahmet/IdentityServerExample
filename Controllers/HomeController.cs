@@ -157,7 +157,7 @@ namespace IdentityServerExample.Controllers
 
             return View(passwordRestViewModel);
         }
-
+        
         public IActionResult ResetPasswordConfirm(string userId, string token)
         {
 
@@ -174,7 +174,7 @@ namespace IdentityServerExample.Controllers
         {
             string token = TempData["token"].ToString();
 
-            string userId = TempData["userId"].ToString();
+            string userId =  TempData["userId"].ToString();
 
 
             User user = await _userManager.FindByIdAsync(userId);

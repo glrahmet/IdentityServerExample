@@ -1,0 +1,43 @@
+﻿@model List<UserRole>
+
+@{
+    ViewData["Title"] = "Roller";
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+}
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger"> @ViewBag.Error </div>
+}
+@if (Model != null && Model.Count > 0)
+{
+    <table class="table table table-bordered table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Rol İsmi</th>
+            <th>İşlem</th>
+            <th>Güncelle</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>
+                    <form asp-route-id="@item.Id" method="post" asp-action="RolDelete">
+                        <button class="btn btn-success" type="submit">Sil</button>
+                    </form>
+                </td>
+                <td>
+                    <a asp-action="RolEdit" asp-route-id="@item.Id" class="btn btn-info">Güncelle</a>
+                </td>
+            </tr>
+        }
+    </table>
+}
+else
+{ <h3>Kullanıcı rol bulunamadı.</h3>
+}
+
+
+<a asp-action="RoleCreate" asp-controller="Admin" class="btn btn-info">Rol Oluştur</a>
+

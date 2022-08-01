@@ -29,7 +29,7 @@ namespace IdentityServerExample
             });
 
 
-
+            
             //identity sýnýfýný inject ettik.
             //password kýsýmlarý için gerekli kontrolleri kýsýtladýk þifre oluþtururken 
             services.AddIdentity<User, UserRole>(opt =>
@@ -44,12 +44,11 @@ namespace IdentityServerExample
                 opt.User.RequireUniqueEmail = true;
                 opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 -._";
 
-            })
+            })                
                 .AddPasswordValidator<CustomPasswordValidator>()
                 .AddUserValidator<CustomUserValidator>()
                 .AddErrorDescriber<CustomIdentityErrorDescriber>()
-                .AddEntityFrameworkStores<IdentityDbContextManager>()
-                
+                .AddEntityFrameworkStores<IdentityDbContextManager>()             
                 .AddDefaultTokenProviders();
 
             services.AddControllersWithViews();
@@ -79,7 +78,7 @@ namespace IdentityServerExample
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseDeveloperExceptionPage();
-            app.UseStatusCodePages();
+            //app.UseStatusCodePages();
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -92,6 +91,8 @@ namespace IdentityServerExample
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+
         }
     }
 }

@@ -9,6 +9,7 @@ namespace IdentityServerExample.Models
 {
     public class User : IdentityUser
     {
+        
         public string City { get; set; }
         public string PictureUrl { get; set; }
 

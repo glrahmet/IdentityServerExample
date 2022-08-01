@@ -9,7 +9,6 @@ namespace IdentityServerExample.Controllers
     {
         protected UserManager<User> _userManager { get; }
         protected SignInManager<User> _signInManager { get; }
-
         protected RoleManager<UserRole> _roleManager { get; }
         protected Task<User> CurrentUser => _userManager.FindByNameAsync(User.Identity.Name);
 
@@ -17,6 +16,7 @@ namespace IdentityServerExample.Controllers
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         } 
         protected void AddModelError(IdentityResult result)
         {

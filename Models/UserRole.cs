@@ -2,7 +2,8 @@
 
 namespace IdentityServerExample.Models
 {
-    public class UserRole:IdentityRole
+    public class UserRole : IdentityRole
     {
+         
     }
 }
