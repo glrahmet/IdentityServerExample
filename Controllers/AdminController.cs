@@ -8,16 +8,19 @@ using System.Threading.Tasks;
 
 namespace IdentityServerExample.Controllers
 {
-    public class AdminController : Controller
+    public class AdminController : BaseController
     {
-
-        private UserManager<User> _userManager { get; }
-
-        public AdminController(UserManager<User> userManager)
+         
+        public AdminController(UserManager<User> userManager, RoleManager<UserRole> roleManager) : base(userManager)
         {
-            _userManager = userManager;
+           
         }
         public IActionResult Index()
+        {
+         return View();
+        }
+
+        public IActionResult Users()
         {
             return View(_userManager.Users.ToList());
         }
