@@ -27,9 +27,7 @@ namespace IdentityServerExample
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString"));
             });
-
-
-            
+                        
             //identity sýnýfýný inject ettik.
             //password kýsýmlarý için gerekli kontrolleri kýsýtladýk þifre oluþtururken 
             services.AddIdentity<User, UserRole>(opt =>
@@ -72,6 +70,25 @@ namespace IdentityServerExample
                 opts.AccessDeniedPath = new PathString("/Member/AccessDenied");
             });
 
+            //admin yetkisi için hatasýný gidermek 
+            //The AuthorizationPolicy named: 'Admin' was not found
+
+            services.AddAuthorization(o =>
+            {
+                o.AddPolicy("FirstStepCompleted", policy => policy.RequireClaim("FirstStepCompleted"));
+                o.AddPolicy("Authorized", policy => policy.RequireClaim("Authorized"));
+            });
+
+            //services.AddAuthorization(options =>
+            //{
+
+            //    options.AddPolicy("Super",
+            //        authBuilder =>
+            //        {
+            //            authBuilder.RequireRole("Administrators");
+            //        });
+
+            //});
         }
 
 
