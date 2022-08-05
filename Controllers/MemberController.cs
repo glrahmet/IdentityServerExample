@@ -26,6 +26,12 @@ namespace IdentityServerExample.Controllers
         {
             User user = await this.CurrentUser;
 
+            if (user != null)
+            {
+                if (string.IsNullOrEmpty(user.PictureUrl))
+                    user.PictureUrl = "/NoPicture.png";
+            }
+
             //mapster kütüphanesi automappper dan daha küçük map kütüphanesidir.
 
             UserViewModel userViewModel = user.Adapt<UserViewModel>();
@@ -142,7 +148,6 @@ namespace IdentityServerExample.Controllers
             }
         }
 
-
         ////klasik yöntemle
         //public async Task<IActionResult> LogOut()
         //{
@@ -157,8 +162,20 @@ namespace IdentityServerExample.Controllers
             await _signInManager.SignOutAsync();
 
         }
-
         public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+        [Authorize("editor")]
+        public IActionResult Editor()
+        {
+            return View();
+        }
+
+
+        [Authorize("mananger")]
+        public IActionResult Manager()
         {
             return View();
         }

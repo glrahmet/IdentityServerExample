@@ -9,6 +9,8 @@
         <td>User Id</td>
         <td>User Name</td>
         <td>Email</td>
+        <td>Roller</td>
+        <td>Rol Atama</td>
     </tr>
 
     @if (Model.Count() == 0)
@@ -25,6 +27,8 @@
                 <td>@item.Id</td>
                 <td>@item.UserName</td>
                 <td>@item.Email</td>
+                <td user-role="@item.Id"></td>
+                <td><a class="btn btn-success" asp-action="RolAssign" asp-route-id="@item.Id">Rol Ata</a></td>
             </tr>
         }
     }

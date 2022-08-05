@@ -1,6 +1,7 @@
 ﻿using IdentityServerExample.Models;
 using IdentityServerExample.ViewModels;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace IdentityServerExample.Controllers
 {
+    [Authorize("Super")]
     public class AdminController : BaseController
     {
         public AdminController(UserManager<User> userManager, RoleManager<UserRole> roleManager) : base(userManager, null, roleManager)
@@ -55,7 +57,6 @@ namespace IdentityServerExample.Controllers
                 return View(roleViewModel);
         }
 
-
         public IActionResult Roles()
         {
             return View(_roleManager.Roles.ToList());
@@ -79,7 +80,7 @@ namespace IdentityServerExample.Controllers
 
         public async Task<IActionResult> RolEdit(string id)
         {
-            UserRole userRole = await _roleManager.FindByIdAsync(id);                             
+            UserRole userRole = await _roleManager.FindByIdAsync(id);
             return View(userRole.Adapt<RoleViewModel>());
         }
 
@@ -105,6 +106,45 @@ namespace IdentityServerExample.Controllers
             }
             else
                 return View(roleViewModel);
+        }
+
+        public async Task<IActionResult> RolAssign(string id)
+        {
+            User user = await _userManager.FindByIdAsync(id);
+            List<RoleAssignViewModel> roleAssignViewModels = new List<RoleAssignViewModel>();
+
+            TempData["UserId"] = id;
+
+            ViewBag.UserName = user.UserName;
+            IQueryable<UserRole> _roles = _roleManager.Roles;
+
+            IList<string> _userRol = await getUserRole(user);
+
+            foreach (var role in _roles)
+            {
+                if (_userRol.Contains(role.Name))
+                    roleAssignViewModels.Add(new RoleAssignViewModel { RoleName = role.Name, RoleId = role.Id, Exits = true });
+                else
+                    roleAssignViewModels.Add(new RoleAssignViewModel { RoleName = role.Name, RoleId = role.Id, Exits = false });
+            }
+            return View(roleAssignViewModels);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RolAssign(List<RoleAssignViewModel> roleAssignViewModel)
+        {
+
+            User _user = await _userManager.FindByIdAsync(TempData["UserId"].ToString());
+            foreach (var item in roleAssignViewModel)
+            {
+
+                if (item.Exits)
+                    await _userManager.AddToRoleAsync(_user, item.RoleName);
+                else
+                    await _userManager.RemoveFromRoleAsync(_user, item.RoleName);
+            }
+
+            return RedirectToAction("Users");
         }
     }
 }

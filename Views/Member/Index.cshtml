@@ -29,21 +29,44 @@
 
             <tr>
                 <td>İl</td>
-                <td>@Model.City</td>
+                <td>
+                    @if (!String.IsNullOrEmpty(Model.City))
+                    {
+                        @Model.City
+                    }
+                    else
+                    {
+                        <span>Belirtilmemiş</span>
+                    }
+
+                </td>
             </tr>
 
             <tr>
                 <td>Doğum Tarihi</td>
-                <td>@Convert.ToDateTime(Model.BirthDay).ToShortDateString()</td>
+                <td>
+
+
+                    @if (@Model.BirthDay != null)
+                    {
+                        @Model.BirthDay?.ToShortDateString()
+                    }
+                    else
+                    {
+                        <span>Belirtilmemiş</span>
+                    } 
+                </td>
             </tr>
 
             <tr>
                 <td>Cinsiyeti</td>
-                <td>@Model.Gender</td>
-            </tr>
+                <td>
+                    @Model.Gender
+            </td>
+        </tr>
 
-        </table>
+    </table>
 
-    </div>
+</div>
 
 </div>
