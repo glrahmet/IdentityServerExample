@@ -1,5 +1,7 @@
+using IdentityServerExample.CliamProvider;
 using IdentityServerExample.CustomValidations;
 using IdentityServerExample.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -27,7 +29,16 @@ namespace IdentityServerExample
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString"));
             });
-                        
+
+
+
+
+
+
+
+
+
+
             //identity sýnýfýný inject ettik.
             //password kýsýmlarý için gerekli kontrolleri kýsýtladýk þifre oluþtururken 
             services.AddIdentity<User, UserRole>(opt =>
@@ -42,14 +53,16 @@ namespace IdentityServerExample
                 opt.User.RequireUniqueEmail = true;
                 opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 -._";
 
-            })                
+            })
                 .AddPasswordValidator<CustomPasswordValidator>()
                 .AddUserValidator<CustomUserValidator>()
                 .AddErrorDescriber<CustomIdentityErrorDescriber>()
-                .AddEntityFrameworkStores<IdentityDbContextManager>()             
+                .AddEntityFrameworkStores<IdentityDbContextManager>()
                 .AddDefaultTokenProviders();
 
             services.AddControllersWithViews();
+
+            services.AddScoped<IClaimsTransformation, ClaimProvider>();
 
 
             //cookies create            
@@ -70,25 +83,15 @@ namespace IdentityServerExample
                 opts.AccessDeniedPath = new PathString("/Member/AccessDenied");
             });
 
-            //admin yetkisi için hatasýný gidermek 
-            //The AuthorizationPolicy named: 'Admin' was not found
+            //claim için plociy belirtiyoruz.
 
-            services.AddAuthorization(o =>
+            services.AddAuthorization(options =>
             {
-                o.AddPolicy("FirstStepCompleted", policy => policy.RequireClaim("FirstStepCompleted"));
-                o.AddPolicy("Authorized", policy => policy.RequireClaim("Authorized"));
+                options.AddPolicy("AnkaraPolicy", policy =>
+                {
+                    policy.RequireClaim("City", "Ankara");
+                });
             });
-
-            //services.AddAuthorization(options =>
-            //{
-
-            //    options.AddPolicy("Super",
-            //        authBuilder =>
-            //        {
-            //            authBuilder.RequireRole("Administrators");
-            //        });
-
-            //});
         }
 
 

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace IdentityServerExample.Controllers
 {
-    [Authorize("Super")]
+  
     public class AdminController : BaseController
     {
         public AdminController(UserManager<User> userManager, RoleManager<UserRole> roleManager) : base(userManager, null, roleManager)
@@ -145,6 +145,11 @@ namespace IdentityServerExample.Controllers
             }
 
             return RedirectToAction("Users");
+        }
+
+        public IActionResult Claims()
+        {
+            return View(User.Claims.ToList());
         }
     }
 }

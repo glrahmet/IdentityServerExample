@@ -8,13 +8,13 @@ namespace IdentityServerExample.Helper
 {
     public static class PasswordReset
     {
-        public static void PasswordResetSendEmail(string link)
+        public static void PasswordResetSendEmail(string link,string email)
         {
             MailMessage mail = new MailMessage();
 
             SmtpClient client = new SmtpClient();
 
-            mail.From = new MailAddress("email adres");
+            mail.From = new MailAddress(email);
             mail.To.Add("umutahmet_18@hotmail.com");
 
             mail.Subject = $"şifre sıfırlama";
@@ -22,7 +22,7 @@ namespace IdentityServerExample.Helper
             mail.Body += $"<a href='{link}'>Şifre yenileme linki</a>";
             mail.IsBodyHtml = true;
             client.Port = 595;
-            client.Credentials = new System.Net.NetworkCredential("email adres ", "şifre");
+            client.Credentials = new System.Net.NetworkCredential("email adres", "şifre");
 
             client.Send(mail);
         }

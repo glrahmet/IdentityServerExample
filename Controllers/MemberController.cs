@@ -179,5 +179,11 @@ namespace IdentityServerExample.Controllers
         {
             return View();
         }
+
+        [Authorize(Policy = "AnkaraPolicy")]
+        public IActionResult Ankara()
+        {
+            return View();
+        }
     }
 }

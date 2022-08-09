@@ -14,7 +14,7 @@ namespace IdentityServerExample.Controllers
 
         public HomeController(UserManager<User> userManager, SignInManager<User> signInManager) : base(userManager, signInManager)
         {
-            
+
         }
         public IActionResult Index()
         {
@@ -48,6 +48,13 @@ namespace IdentityServerExample.Controllers
                         ModelState.AddModelError("", "Hesabınız bir süreliğine kilitlenmiştir. Lütfen daha sonra tekrar deneyiniz.");
                         return View(userLoginModel);
                     }
+
+                    if (!await _userManager.IsEmailConfirmedAsync(user))
+                    {
+                        ModelState.AddModelError("", "Hesabınızı doğrulama işlemi yapmadınız. Lütfen mail adresinizi kontrol ediniz.");
+                        return View(userLoginModel);
+                    }
+
 
                     //bir cookie var ise silsin yeniden giriş yaptığım için 
                     await _signInManager.SignOutAsync();
@@ -119,7 +126,21 @@ namespace IdentityServerExample.Controllers
                 IdentityResult identityResult = await _userManager.CreateAsync(_users, userViewModel.Password);
 
                 if (identityResult.Succeeded)
+                {
+                    string confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(_users);
+
+                    string link = Url.Action("ConfirmEmail", "Home", new
+                    {
+                        userId = _users.Id,
+                        token = confirmationToken,
+
+                    }, protocol: HttpContext.Request.Scheme
+                    );
+
+                    Helper.EmailConfirmation.EmailConfirmationMethod(link, _users.Email);
+
                     return RedirectToAction("Login");
+                }
                 else
                     AddModelError(identityResult);
             }
@@ -148,7 +169,7 @@ namespace IdentityServerExample.Controllers
                     token = passwordResetToken
 
                 }, HttpContext.Request.Scheme);
-                Helper.PasswordReset.PasswordResetSendEmail(passwordResetLink);
+                Helper.PasswordReset.PasswordResetSendEmail(passwordResetLink, user.Email);
 
                 ViewBag.Status = "SuccessFull";
             }
@@ -157,7 +178,7 @@ namespace IdentityServerExample.Controllers
 
             return View(passwordRestViewModel);
         }
-        
+
         public IActionResult ResetPasswordConfirm(string userId, string token)
         {
 
@@ -174,7 +195,7 @@ namespace IdentityServerExample.Controllers
         {
             string token = TempData["token"].ToString();
 
-            string userId =  TempData["userId"].ToString();
+            string userId = TempData["userId"].ToString();
 
 
             User user = await _userManager.FindByIdAsync(userId);
@@ -191,9 +212,9 @@ namespace IdentityServerExample.Controllers
                     await _userManager.UpdateSecurityStampAsync(user);
                     ViewBag.Status = "success";
                 }
-                else                
+                else
                     AddModelError(identityResult);
-                
+
             }
             else
             {
@@ -201,6 +222,28 @@ namespace IdentityServerExample.Controllers
                 return View(passwordRestViewModel);
             }
             return View(passwordRestViewModel);
+        }
+
+       
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user != null)
+            {
+                IdentityResult identityResult = await _userManager.ConfirmEmailAsync(user, token);
+
+                if (identityResult.Succeeded)
+                    ViewBag.status = "Email adresiniz onaylanmıştır. Login ekranından giriş yapabilirsiniz";
+                else
+                    ViewBag.status = "Hata oluştu. Lütfen daha sonra deneyiniz";
+
+            }
+            else
+                ViewBag.status = "Hata oluştu. Lütfen daha sonra deneyiniz";
+
+            return View();
+
         }
     }
 }
