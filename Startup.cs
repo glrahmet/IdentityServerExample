@@ -32,12 +32,11 @@ namespace IdentityServerExample
 
 
 
-
-
-
-
-
-
+            //services.AddAuthentication().AddFacebook(facebookOptions =>
+            //{
+            //    facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+            //    facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            //});
 
             //identity sýnýfýný inject ettik.
             //password kýsýmlarý için gerekli kontrolleri kýsýtladýk þifre oluþtururken 
@@ -52,7 +51,7 @@ namespace IdentityServerExample
                 //email uniq karakterler için ve karakter setini belirtmek için kullanýlýr
                 opt.User.RequireUniqueEmail = true;
                 opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 -._";
-
+/**/
             })
                 .AddPasswordValidator<CustomPasswordValidator>()
                 .AddUserValidator<CustomUserValidator>()
@@ -92,6 +91,7 @@ namespace IdentityServerExample
                     policy.RequireClaim("City", "Ankara");
                 });
             });
+
         }
 
 
